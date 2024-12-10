@@ -40,6 +40,8 @@ import {
 import { createIUserFromRealUser, IUser } from "@/interfaces/user.interface";
 import { useGetUserQuery, usrApi } from "@/service/userApi.service";
 import React from "react";
+import {IArticle} from "@/interfaces/article.interface";
+import {IFlat} from "@/interfaces/flat.interface";
 
 const profileRegex = /^\/profile\/.+/;
 const articlesRegex = /^\/articles\/.+/;
@@ -101,14 +103,15 @@ const Navigation: FC<IFilter> = ({ filter, setFilter }) => {
   messages = useTypedSelector((selector) => selector.userSlice.user);
   useEffect(() => {
     calcNewMessages.current = 0;
-    messages.notifications.map((n) => {
-      if (n[0] == 1) {
+
+    const notifications = messages?.notifications || []; // Установите значение по умолчанию
+
+    notifications.map((n) => {
+      if (n[0] === 1) {
         calcNewMessages.current += 1;
       }
     });
-
-    setResCount(calcNewMessages.current);
-  }, [messages.notifications]);
+  }, [messages]);
 
   return (
     <>
@@ -255,7 +258,7 @@ const Navigation: FC<IFilter> = ({ filter, setFilter }) => {
                     )}
                     <Image
                       src={`/icons/like${
-                        user.favourites.users.find((us) => us.id === idUser.id)
+                        user.favourites.users.find((us: IUser) => us.id === idUser.id)
                           ? "d"
                           : ""
                       }.svg`}
@@ -301,7 +304,7 @@ const Navigation: FC<IFilter> = ({ filter, setFilter }) => {
                   <Image
                     src={`/icons/like${
                       user.favourites.articles.find(
-                        (ar) => ar.id === article.id
+                        (ar: IArticle) => ar.id === article.id
                       )
                         ? "d"
                         : ""
@@ -329,7 +332,7 @@ const Navigation: FC<IFilter> = ({ filter, setFilter }) => {
                   />
                   <Image
                     src={`/icons/like${
-                      user.favourites.flats.find((fl) => fl.id === flat.id)
+                      user.favourites.flats.find((fl: IFlat) => fl.id === flat.id)
                         ? "d"
                         : ""
                     }.svg`}
