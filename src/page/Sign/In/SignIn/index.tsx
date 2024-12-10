@@ -28,7 +28,8 @@ export default React.memo(function SignIn() {
    * когда это требуется, например, при нажатии кнопки
    */
 
-  const [trigger, result, lastPromiseInfo] = authApi.endpoints.login.useLazyQuery() as [any, any, any];
+  const [trigger, result, lastPromiseInfo] =
+    authApi.endpoints.login.useLazyQuery();
   const [userTrigger, userResult] = usrApi.endpoints.getMe.useLazyQuery();
 
   const handleClick = async () => {
